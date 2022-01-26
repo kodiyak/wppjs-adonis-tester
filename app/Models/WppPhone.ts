@@ -74,17 +74,21 @@ export default class WppPhone extends BaseModel {
       ModelAttributes<Contact>,
       'createdAt' | 'updatedAt' | 'name' | 'id' | 'hasWhatsapp' | 'personInfoId'
     >,
-    personInfo: PersonInfo
+    personInfo?: PersonInfo
   ) {
     const self: WppPhone = this
-    const contact = await Contact.firstOrCreate(
+    const contact = await Contact.updateOrCreate(
       { phoneNumber: contactProps.phoneNumber },
       contactProps
     )
 
     await self.related('contacts').detach([contact.id])
     await self.related('contacts').attach([contact.id])
-    await contact.related('personInfo').associate(personInfo)
+    if (!personInfo) {
+      await contact.load('personInfo')
+      const personInfo = contact.personInfo || (await new PersonInfo().save())
+      await contact.related('personInfo').associate(personInfo)
+    }
 
     return contact
   }
