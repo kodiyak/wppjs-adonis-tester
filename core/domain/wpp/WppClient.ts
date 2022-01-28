@@ -2,6 +2,7 @@ import { consoleClient } from '@helpers/consoleClient'
 import WppPhone from 'App/Models/WppPhone'
 import WppSession from 'App/Models/WppSession'
 import WAWebJS, { Client } from 'whatsapp-web.js'
+import Env from '@ioc:Adonis/Core/Env'
 
 export class WppClient {
   public client: WAWebJS.Client
@@ -37,7 +38,7 @@ export class WppClient {
 
     this.client = new Client({
       session: this.wppSession?.session,
-      puppeteer: { headless: true },
+      puppeteer: { headless: Env.get('BROWSER_HEADLESS') },
     })
 
     this.client.on('authenticated', async (session) => {

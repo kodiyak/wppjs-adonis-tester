@@ -4,6 +4,7 @@ import qrcodeTerminal from 'qrcode-terminal'
 import WppPhone from 'App/Models/WppPhone'
 import { DateTime } from 'luxon'
 import { consoleClient } from '@helpers/consoleClient'
+import Env from '@ioc:Adonis/Core/Env'
 
 export class WppPhoneAuth {
   public client: WAWebJS.Client
@@ -19,7 +20,7 @@ export class WppPhoneAuth {
   private createClient() {
     const client = new Client({
       puppeteer: {
-        headless: true,
+        headless: Env.get('BROWSER_HEADLESS'),
       },
     })
     this.client = client

@@ -3,8 +3,8 @@ import WppPhone from 'App/Models/WppPhone'
 import { DateTime } from 'luxon'
 
 const run = async () => {
-  // const isProd = Env.get('NODE_ENV') === 'production'
-  const isProd = true
+  const isProd = Env.get('NODE_ENV') === 'production'
+  // const isProd = true
 
   if (isProd) {
     const phones = await WppPhone.all()

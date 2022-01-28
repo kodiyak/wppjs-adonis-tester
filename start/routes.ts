@@ -1,5 +1,7 @@
 import { listContactsByWppPhoneRoute } from '@infra/factories/routes/api/contacts/listContactsByWppPhoneRoute'
 import { createOrganizationQsRoute } from '@infra/factories/routes/api/organization/createOrganizationQsRoute'
+import { createWorkflowRoute } from '@infra/factories/routes/api/workflows/createWorkflowRoute'
+import { listWorkflowsByWppPhoneRoute } from '@infra/factories/routes/api/workflows/listWorkflowsByWppPhoneRoute'
 import { generateQrCodeRoute } from '@infra/factories/routes/api/wpp-phones/generateQrCodeRoute'
 import { listWppPhonesRoute } from '@infra/factories/routes/api/wpp-phones/listWppPhonesRoute'
 import { apiAuthRoute } from '@infra/factories/routes/auth/apiAuthRoute'
@@ -19,5 +21,8 @@ Route.group(() => {
     Route.get('/api/phones', listWppPhonesRoute)
 
     Route.get('/api/phones/:phoneId/contacts', listContactsByWppPhoneRoute)
+
+    Route.post('/api/phones/:phoneId/workflows', createWorkflowRoute)
+    Route.get('/api/phones/:phoneId/workflows', listWorkflowsByWppPhoneRoute)
   }).middleware(['org.header:force'])
 }).middleware(['auth.org'])
