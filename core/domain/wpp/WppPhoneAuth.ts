@@ -19,7 +19,7 @@ export class WppPhoneAuth {
   private createClient() {
     const client = new Client({
       puppeteer: {
-        headless: false,
+        headless: true,
       },
     })
     this.client = client

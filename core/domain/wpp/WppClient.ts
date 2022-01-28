@@ -37,7 +37,7 @@ export class WppClient {
 
     this.client = new Client({
       session: this.wppSession?.session,
-      puppeteer: { headless: false },
+      puppeteer: { headless: true },
     })
 
     this.client.on('authenticated', async (session) => {
