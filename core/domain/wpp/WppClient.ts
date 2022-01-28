@@ -37,6 +37,7 @@ export class WppClient {
 
     this.client = new Client({
       session: this.wppSession?.session,
+      puppeteer: { headless: false },
     })
 
     this.client.on('authenticated', async (session) => {
@@ -68,6 +69,11 @@ export class WppClient {
         //   this.client.destroy()
         // }, 1000 * 20)
       }
+    })
+
+    this.client.on('disconnected', async () => {
+      await this.wppPhone.merge({ isActive: false }).save()
+      this.status.isNeedAuth = true
     })
 
     consoleClient(this.client)
