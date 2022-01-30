@@ -1,4 +1,5 @@
 import { listContactsByWppPhoneRoute } from '@infra/factories/routes/api/contacts/listContactsByWppPhoneRoute'
+import { createNewPhoneMessageRoute } from '@infra/factories/routes/api/dispatch/messages/createNewPhoneMessageRoute'
 import { createOrganizationQsRoute } from '@infra/factories/routes/api/organization/createOrganizationQsRoute'
 import { createWorkflowRoute } from '@infra/factories/routes/api/workflows/createWorkflowRoute'
 import { listWorkflowsByWppPhoneRoute } from '@infra/factories/routes/api/workflows/listWorkflowsByWppPhoneRoute'
@@ -24,5 +25,6 @@ Route.group(() => {
 
     Route.post('/api/phones/:phoneId/workflows', createWorkflowRoute)
     Route.get('/api/phones/:phoneId/workflows', listWorkflowsByWppPhoneRoute)
+    Route.post('/api/phones/:phoneId/dispatch/messages', createNewPhoneMessageRoute)
   }).middleware(['org.header:force'])
 }).middleware(['auth.org'])
