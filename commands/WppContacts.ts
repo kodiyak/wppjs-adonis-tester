@@ -30,16 +30,21 @@ export default class WppContacts extends BaseCommand {
   }
 
   public async run() {
-    this.logger.info('Hello world!')
-    const wppPhoneId = 2
+    const wppPhoneId = 3
     const wppPhone = await WppPhone.findOrFail(wppPhoneId)
     const contacts = await wppPhone.getWppContacts()
 
+    this.logger.info(
+      `Starting ${contacts.length} Contacts Integration [${wppPhone.phoneNumber}]...`
+    )
+
     for (const contact of contacts) {
+      const name = strHelper.normalize(contact.name || contact.pushname)
+      this.logger.info(`Contact ${name} [${contact.number}]`)
       await wppPhone.addContact({
         phoneNumber: contact.number,
         hasWhatsapp: contact.isWAContact,
-        name: strHelper.normalize(contact.name || contact.pushname),
+        name,
         personInfoId: null as any,
         data: contact,
       })

@@ -18,6 +18,8 @@ export async function createNewPhoneMessageRoute(ctx: HttpContextContract) {
     type: 'message',
   })
 
+  await dispatch.dispatch()
+
   return createAdonisHttpResponse(ctx, {
     statusCode: 200,
     status: 'success',

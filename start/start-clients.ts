@@ -3,10 +3,10 @@ import WppPhone from 'App/Models/WppPhone'
 import { DateTime } from 'luxon'
 
 const run = async () => {
-  const isProd = Env.get('NODE_ENV') === 'production'
+  const canStart = Env.get('START_CLIENTS')
   // const isProd = true
 
-  if (isProd) {
+  if (canStart) {
     const phones = await WppPhone.all()
     for (const phone of phones) {
       const lastSession = await phone.getLastSession()

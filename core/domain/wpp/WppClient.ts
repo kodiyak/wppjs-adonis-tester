@@ -18,7 +18,7 @@ export class WppClient {
 
   public qrCode: string
 
-  constructor(protected wppPhone: WppPhone, public wppSession?: WppSession) {
+  constructor(public wppPhone: WppPhone, public wppSession?: WppSession) {
     this.createClient()
   }
 
@@ -42,9 +42,7 @@ export class WppClient {
 
   private createClient() {
     if (!this.wppSession) return
-    console.log(
-      `[Wpp][CREATE_CLIENT][Phone][${this.wppPhone.phoneNumber}][${this.wppSession?.reference}]`
-    )
+    console.log(`[Wpp][CREATE_CLIENT][Phone][${this.wppPhone.phoneNumber}]`)
     if (this.client) {
       this.client.destroy()
     }
@@ -57,13 +55,15 @@ export class WppClient {
     this.client.on('authenticated', async (session) => {
       this.session = session
       this.status.isAuth = true
+      console.log(`[Wpp][AUTHENTICATED][Phone][${this.wppPhone.phoneNumber}]`)
     })
 
     this.client.on('ready', async () => {
+      this.status.isReady = true
       if (this.session) {
         const { session: wppSession } = await this.wppPhone.wppAuth(this.client, this.session)
         this.wppSession = wppSession
-        console.log(`[Wpp][READY][Phone][${this.wppPhone.phoneNumber}][${this.wppSession.id}]`)
+        console.log(`[Wpp][READY][Phone][${this.wppPhone.phoneNumber}]`)
       }
     })
 
