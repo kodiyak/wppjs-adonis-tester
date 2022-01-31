@@ -27,6 +27,19 @@ export class WppClient {
     this.createClient()
   }
 
+  public async onReady(cb: () => void | Promise<void>) {
+    if (this.status.isReady) {
+      await cb()
+    } else {
+      return new Promise<void>((resolve) => {
+        this.client.on('ready', async () => {
+          await cb()
+          resolve()
+        })
+      })
+    }
+  }
+
   private createClient() {
     if (!this.wppSession) return
     console.log(

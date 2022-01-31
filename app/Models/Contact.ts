@@ -24,6 +24,12 @@ export default class Contact extends BaseModel {
   @column()
   public name: string
 
+  @column({
+    consume: (v) => JSON.parse(v),
+    prepare: (v) => JSON.stringify(v),
+  })
+  public data: any
+
   @column()
   public personInfoId: number
 

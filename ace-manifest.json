@@ -3,7 +3,7 @@
     "test:first": {
       "settings": {
         "loadApp": true,
-        "stayAlive": true
+        "stayAlive": false
       },
       "commandPath": "./commands/TestFirst",
       "commandName": "test:first",

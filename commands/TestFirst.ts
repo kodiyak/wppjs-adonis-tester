@@ -1,5 +1,6 @@
 import { BaseCommand } from '@adonisjs/core/build/standalone'
 import { WppPhoneAuth } from '@core/domain/wpp/WppPhoneAuth'
+import Dispatch from 'App/Models/Dispatch'
 import Organization from 'App/Models/Organization'
 import { createWriteStream } from 'fs-jetpack'
 import qrcode from 'qrcode-terminal'
@@ -28,12 +29,15 @@ export default class TestFirst extends BaseCommand {
      * you manually decide to exit the process. Don't forget to call
      * `node ace generate:manifest` afterwards.
      */
-    stayAlive: true,
+    stayAlive: false,
   }
 
   public async run() {
-    const organization = await Organization.firstOrFail()
-    const auth = new WppPhoneAuth(organization)
+    const dispatcher = await Dispatch.firstOrFail()
+    await dispatcher.dispatch()
+
+    // const organization = await Organization.firstOrFail()
+    // const auth = new WppPhoneAuth(organization)
 
     // const client = await organization.client()
 

@@ -10,6 +10,8 @@ export default class Contacts extends BaseSchema {
       table.boolean('has_whatsapp').nullable()
       table.string('name').nullable()
 
+      table.json('data').nullable()
+
       table
         .integer('person_info_id')
         .unsigned()
