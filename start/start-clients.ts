@@ -10,7 +10,7 @@ const run = async () => {
     const phones = await WppPhone.all()
     for (const phone of phones) {
       const lastSession = await phone.getLastSession()
-      if (!!lastSession) {
+      if (!!lastSession && !phone.phoneNumber.endsWith('4114')) {
         await phone.client()
         await phone.merge({ lastActionAt: DateTime.now(), isActive: true }).save()
         console.log(`[Wpp][START_CLIENT][Phone][${phone.phoneNumber}]`)

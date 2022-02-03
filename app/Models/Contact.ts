@@ -10,6 +10,7 @@ import {
 import PersonInfo from './PersonInfo'
 import Tag from './Tag'
 import WppPhone from './WppPhone'
+import WAWebJS from 'whatsapp-web.js'
 
 export default class Contact extends BaseModel {
   @column({ isPrimary: true })
@@ -28,7 +29,7 @@ export default class Contact extends BaseModel {
     consume: (v) => JSON.parse(v),
     prepare: (v) => JSON.stringify(v),
   })
-  public data: any
+  public data: WAWebJS.Contact
 
   @column()
   public personInfoId: number

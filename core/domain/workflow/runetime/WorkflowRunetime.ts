@@ -4,8 +4,8 @@ import Organization from 'App/Models/Organization'
 import { default as WorkflowModel } from 'App/Models/Workflow'
 import WppPhone from 'App/Models/WppPhone'
 import { WorkflowRunetimeMain } from './domain/WorkflowRunetimeMain'
-import { WorkflowRunetimeWorkflow } from './domain/WorkflowRunetimeWorkflow'
 import { WorkflowRunetimeCurrent } from './WorkflowRunetimeCurrent'
+import Env from '@ioc:Adonis/Core/Env'
 
 export class WorkflowRunetime {
   public status = {
@@ -26,16 +26,23 @@ export class WorkflowRunetime {
   }
 
   public async start() {
-    // this.client = await this.props.phone.client()
     this.status.isStarted = true
-    // if (this.client.status.isAuth) {
-    this.tree = new WorkflowRunetimeMain(this.props.workflow.data.tree)
-    // console.log('WORKFLOW', this.props.workflow.data.tree.children)
-    console.log('WORKFLOW_TREE', this.tree.children)
-    // }
+    if (Env.get('START_CLIENTS')) {
+      this.client = await this.props.phone.client()
+      if (this.client.status.isAuth) {
+        this.tree = new WorkflowRunetimeMain(this, this.props.workflow.data.tree)
+        this.run()
+      }
+    } else {
+      this.tree = new WorkflowRunetimeMain(this, this.props.workflow.data.tree)
+      this.run()
+    }
   }
 
   public async run() {
+    for (const contact of this.props.contacts) {
+      await this.tree.run(contact.data?.id._serialized)
+    }
     // const message = this.current.getMessage()
   }
 

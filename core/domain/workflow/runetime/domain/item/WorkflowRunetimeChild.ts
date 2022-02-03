@@ -1,6 +1,7 @@
 import { createEventEmitter } from '@infra/factories/createEventEmitter'
 import { Workflow } from 'Contracts/workflow'
 import { createWorkflowRunetimeItem } from '../../../factories/createWorkflowRunetimeItem'
+import { WorkflowRunetime } from '../../WorkflowRunetime'
 
 export abstract class WorkflowRunetimeChild<T extends Workflow.Types> {
   public response: WorkflowRunetimeItem.Response
@@ -9,10 +10,14 @@ export abstract class WorkflowRunetimeChild<T extends Workflow.Types> {
 
   public children: WorkflowRunetimeChild<any>[] = []
 
-  constructor(protected item: Workflow.Item<T>, protected parent?: WorkflowRunetimeChild<any>) {
+  constructor(
+    protected runetime: WorkflowRunetime,
+    protected item: Workflow.Item<T>,
+    protected parent?: WorkflowRunetimeChild<any>
+  ) {
     if (item.children) {
       for (const child of item.children) {
-        this.children.push(createWorkflowRunetimeItem(child, this))
+        this.children.push(createWorkflowRunetimeItem(this.runetime, child, this))
       }
     }
   }
@@ -22,7 +27,7 @@ export abstract class WorkflowRunetimeChild<T extends Workflow.Types> {
     this.events.emit('response', response)
   }
 
-  public abstract send(): Promise<void>
+  public abstract send(contactId: string): Promise<void>
 }
 
 namespace WorkflowRunetimeItem {

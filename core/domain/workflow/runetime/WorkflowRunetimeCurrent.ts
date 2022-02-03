@@ -1,8 +1,16 @@
 import { Workflow } from 'Contracts/workflow'
+import { WorkflowRunetimeChild } from './domain/item/WorkflowRunetimeChild'
 import { WorkflowRunetimeContext } from './WorkflowRunetimeContext'
 
 export class WorkflowRunetimeCurrent extends WorkflowRunetimeContext {
-  private _executedItems: Workflow.Item[] = []
+  private _executedItems: WorkflowRunetimeCurrent.Item[] = []
 
-  public getMessage() {}
+  public async next() {}
+}
+
+namespace WorkflowRunetimeCurrent {
+  export interface Item<T extends Workflow.Types = Workflow.Types> {
+    order: number
+    item: WorkflowRunetimeChild<T>
+  }
 }
