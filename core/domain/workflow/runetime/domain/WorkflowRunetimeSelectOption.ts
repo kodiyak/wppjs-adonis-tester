@@ -1,24 +1,46 @@
-import { Buttons } from 'whatsapp-web.js'
+import { Workflow } from 'Contracts/workflow'
+import WAWebJS, { Buttons } from 'whatsapp-web.js'
 import { WorkflowRunetimeChild } from './item/WorkflowRunetimeChild'
+import { WorkflowRunetimeSelectOptionOption } from './WorkflowRunetimeSelectOptionOption'
 
-export class WorkflowRunetimeSelectOption extends WorkflowRunetimeChild<'select_option'> {
+export class WorkflowRunetimeSelectOption extends WorkflowRunetimeChild<
+  'select_option',
+  {
+    text: string
+    optionId: string
+  },
+  Workflow.Types,
+  'select_option.option'
+> {
   public async send(contactId: string) {
+    const isChild = (v: string) => this.children.map((c) => c.uuid).includes(v)
     const messageButton = await this.runetime.client.client.sendMessage(
       contactId,
-      new Buttons(
-        'Body text/ MessageMedia instance',
-        [
-          { id: 'customId', body: 'button1' },
-          { body: 'button2' },
-          { body: 'button3' },
-          { body: 'button4' },
-        ],
-        "Title here, doesn't work with media",
-        'Footer here'
-      ),
-      { caption: 'if you used a MessageMedia instance, use the caption here' }
+      new Buttons(`Selecione uma das opções abaixo`, this.children.map(this.createButton))
     )
 
-    console.log('MESSAGE_BUTTON', messageButton)
+    await new Promise<void>(async (resolve) => {
+      console.log('MESSAGE_BUTTON', messageButton)
+      const onMessage = async (message: WAWebJS.Message) => {
+        if (message.selectedButtonId) {
+          if (isChild(message.selectedButtonId)) {
+            const child = this.children.find((c) => c.uuid === message.selectedButtonId)
+            if (child) {
+              await child.send(contactId)
+            }
+          }
+        }
+
+        this.runetime.client.client.off('message', onMessage)
+
+        resolve()
+      }
+
+      this.runetime.client.client.on('message', onMessage)
+    })
+  }
+
+  private createButton(option: WorkflowRunetimeSelectOptionOption) {
+    return { id: option.getId(), body: option.getBody() } as any
   }
 }

@@ -18,18 +18,15 @@ export namespace Workflow {
       type: 'text'
       value: string
     }
-
     export type Workflow = {
       type: 'workflow'
     }
-
     export type SelectOption = {
       type: 'select_option'
       value?: {
         messageText?: string
       }
     }
-
     export type SelectOptionOption = {
       type: 'select_option.option'
       value: string
