@@ -1,3 +1,4 @@
+import Contact from 'App/Models/Contact'
 import { Workflow } from 'Contracts/workflow'
 import WAWebJS, { Buttons } from 'whatsapp-web.js'
 import { WorkflowRunetimeChild } from './item/WorkflowRunetimeChild'
@@ -12,10 +13,11 @@ export class WorkflowRunetimeSelectOption extends WorkflowRunetimeChild<
   Workflow.Types,
   'select_option.option'
 > {
-  public async send(contactId: string) {
+  public async send(data: WorkflowRunetimeChild.SendParams) {
+    const { contact } = data
     const isChild = (v: string) => this.children.map((c) => c.uuid).includes(v)
     const messageButton = await this.runetime.client.client.sendMessage(
-      contactId,
+      contact.data.id._serialized,
       new Buttons(`Selecione uma das opções abaixo`, this.children.map(this.createButton))
     )
 
@@ -26,7 +28,7 @@ export class WorkflowRunetimeSelectOption extends WorkflowRunetimeChild<
           if (isChild(message.selectedButtonId)) {
             const child = this.children.find((c) => c.uuid === message.selectedButtonId)
             if (child) {
-              await child.send(contactId)
+              await child.send(data)
             }
           }
         }

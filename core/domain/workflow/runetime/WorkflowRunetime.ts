@@ -41,7 +41,7 @@ export class WorkflowRunetime {
 
   public async run() {
     for (const contact of this.props.contacts) {
-      await this.tree.run(contact.data?.id._serialized)
+      await this.tree.run(contact)
     }
     // const message = this.current.getMessage()
   }

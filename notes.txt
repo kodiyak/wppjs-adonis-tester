@@ -1,0 +1,29 @@
+Workflow Features:
+  - Condicionais - [
+    Respostas: string[],
+    Child: Workflow
+  ]
+  - Histórico de Conversa - [
+    Registrar quais opções foram selecionadas,
+    Registrar quais respostas foram dadas para determinado item executado
+  ]
+  - Aguardar resposta do usuário?
+
+System Features:
+  - Back-Office - [
+    Escuta Palavra/Frase e retorna um Workflow,
+    Escuta Contatos Antigos - [
+      - Selecionar Workflow de Acordo com o Tempo.
+      // Ex: Um contato com uma pré-interação
+      // ao enviar uma nova mensagem após 30 dias,
+      // selecionar workflow "Lead 30 dias"
+    ]
+  ]
+  - Agendamentos - [
+    Data Específica,
+    Executar mensalmente,
+    Executar diáriamente,
+    Executar por horas,
+    Executar por minutos,
+    // Todos devem enviar um workflow no período planejado
+  ]

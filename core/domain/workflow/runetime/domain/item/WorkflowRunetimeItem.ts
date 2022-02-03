@@ -1,4 +1,5 @@
 import { createEventEmitter } from '@infra/factories/createEventEmitter'
+import Contact from 'App/Models/Contact'
 import { Workflow } from 'Contracts/workflow'
 import { createWorkflowRunetimeItem } from '../../../factories/createWorkflowRunetimeItem'
 import { WorkflowRunetime } from '../../WorkflowRunetime'
@@ -28,7 +29,7 @@ export abstract class WorkflowRunetimeItem<T extends Workflow.Types> {
     this.events.emit('response', response)
   }
 
-  public abstract send(contactId: string): Promise<void>
+  public abstract send(contact: Contact): Promise<void>
 }
 
 namespace WorkflowRunetimeItem {
