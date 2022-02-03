@@ -1,5 +1,5 @@
-import { WorkflowRunetimeItem } from './WorkflowRunetimeItem'
+import { WorkflowRunetimeChild } from './item/WorkflowRunetimeChild'
 
-export class WorkflowRunetimeSelectOption extends WorkflowRunetimeItem<'select_option'> {
+export class WorkflowRunetimeSelectOption extends WorkflowRunetimeChild<'select_option'> {
   public async send() {}
 }

@@ -1,14 +1,21 @@
 import { createEventEmitter } from '@infra/factories/createEventEmitter'
 import { Workflow } from 'Contracts/workflow'
+import { createWorkflowRunetimeItem } from '../../../factories/createWorkflowRunetimeItem'
 
-export abstract class WorkflowRunetimeItem<T extends Workflow.Types> {
+export abstract class WorkflowRunetimeChild<T extends Workflow.Types> {
   public response: WorkflowRunetimeItem.Response
 
   public events = createEventEmitter<WorkflowRunetimeItem.Events>()
 
-  public children: WorkflowRunetimeItem<any>[] = []
+  public children: WorkflowRunetimeChild<any>[] = []
 
-  constructor(protected item: Workflow.Item<T>) {}
+  constructor(protected item: Workflow.Item<T>, protected parent?: WorkflowRunetimeChild<any>) {
+    if (item.children) {
+      for (const child of item.children) {
+        this.children.push(createWorkflowRunetimeItem(child, this))
+      }
+    }
+  }
 
   public respond(response: WorkflowRunetimeItem.Response) {
     this.response = response

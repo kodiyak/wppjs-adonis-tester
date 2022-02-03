@@ -46,7 +46,7 @@ export namespace Workflow {
   export type Types = keyof ItemsData
 
   export interface Main {
-    tree: Workflow.Item
+    tree: Workflow.Item<'workflow'>
   }
 
   export interface Events {
